@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Happy Teachers' Day!</title>
+<base target="_blank">
+</head>
+<body>
+   
+    <div id="hearts"></div>
+
+    <h1 class="type"><i>HAPPY TEACHERSDAY!!!</i></h1>
+
+    <p class="center date-line">📅 Date today is: <span id="date"></span></p>
+
+    <img src="pic1.png" alt="pic1" class="pic1">
+
+    <p class="center message">
+        <span class="greet">🎊 Happy Teachers' Day po, Sir! 🎊</span>
+        Maraming salamat po sa <span class="highlight">95 na grade</span> —
+        hinding-hindi ko po makakalimutan 'yan, sobrang saya ko! <br>
+        Gusto ko rin po magpasalamat kasi laging
+        <span class="highlight">binibigyang-halaga</span> niyo po ang aming mga opinyon.
+        <span class="thanks">Salamat sa lahat ng pasensya at paggabay sa amin.
+        Naway manatili kayong malakas at masaya, Sir.
+        Maraming salamat po ulit! 🙏</span>
+    </p>
+
+   
+    <div class="player" id="player">
+        <div class="disk" id="disk">
+            <div class="disk-label"></div>
+        </div>
+        <p class="hint">Click the disk to play / pause</p>
+    </div>
+
+  
+    <button id="soundBtn" class="hidden">🔊 Tap for sound</button>
+
+    
+    <audio id="music" loop muted autoplay>
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // date
+        document.getElementById("date").innerHTML = new Date().toLocaleString();
+
+        // ---- spinning disk player ----
+        const music    = document.getElementById("music");
+        const disk     = document.getElementById("disk");
+        const soundBtn = document.getElementById("soundBtn");
+
+        function setDisk(playing) {
+            disk.style.animationPlayState = playing ? "running" : "paused";
+        }
+
+       
+        music.play().then(() => {
+            setDisk(true);
+            soundBtn.classList.remove("hidden");
+        }).catch(() => setDisk(false));
+
+      
+        function enableSound() {
+            music.muted = false;
+            music.play();
+            setDisk(true);
+            soundBtn.classList.add("hidden");
+        }
+        soundBtn.addEventListener("click", enableSound);
+
+        // click disk = play / pause
+        disk.addEventListener("click", () => {
+            if (music.muted) { enableSound(); return; }
+            if (music.paused) {
+                music.play();
+                setDisk(true);
+            } else {
+                music.pause();
+                setDisk(false);
+            }
+        });
+
+        // ---- floating hearts ----
+        const heartsLayer = document.getElementById("hearts");
+        const heartChars = ["❤️", "💖", "💗", "💝", "💘", "💕"];
+
+        function spawnHeart() {
+            const h = document.createElement("span");
+            h.className = "heart";
+            h.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.fontSize = 16 + Math.random() * 28 + "px";
+            h.style.animationDuration = 4 + Math.random() * 5 + "s";
+            heartsLayer.appendChild(h);
+            setTimeout(() => h.remove(), 10000);
+        }
+
+        for (let i = 0; i < 12; i++) setTimeout(spawnHeart, i * 300);
+        setInterval(spawnHeart, 700);
+    </script>
+</body>
+</html>
